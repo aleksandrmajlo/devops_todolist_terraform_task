@@ -1,23 +1,30 @@
 #!/bin/bash
 
-# Script to silently install and start the todo web app on the virtual machine. 
-# Note that all commands bellow are without sudo - that's because extention mechanism 
-# runs scripts under root user. 
+set -euo pipefail
 
-# install system updates and isntall python3-pip package using apt. '-yq' flags are 
-# used to suppress any interactive prompts - we won't be able to confirm operation 
-# when running the script as VM extention.  
+APP_REPOSITORY="https://github.com/aleksandrmajlo/devops_todolist_terraform_task.git"
+TEMP_DIRECTORY="/tmp/devops_todolist_terraform_task"
+APP_DIRECTORY="/app"
+
+# Install the packages required by the application.
 apt-get update -yq
-apt-get install python3-pip -yq
+apt-get install -yq python3 python3-pip git
 
-# Create a directory for the app and download the files. 
-mkdir /app 
-# make sure to uncomment the line bellow and update the link with your GitHub username
-# git clone https://github.com/<your-gh-username>/azure_task_12_deploy_app_with_vm_extention.git
-cp -r devops_todolist_terraform_task/app/* /app
+# Download the application source code.
+rm -rf "${TEMP_DIRECTORY}"
+git clone --depth 1 "${APP_REPOSITORY}" "${TEMP_DIRECTORY}"
 
-# create a service for the app via systemctl and start the app
-mv /app/todoapp.service /etc/systemd/system/
+# Copy the application files into their permanent directory.
+rm -rf "${APP_DIRECTORY}"
+mkdir -p "${APP_DIRECTORY}"
+cp -a "${TEMP_DIRECTORY}/app/." "${APP_DIRECTORY}/"
+
+# The service must be able to execute the startup script.
+chmod +x "${APP_DIRECTORY}/start.sh"
+
+# Install and start the systemd service.
+mv "${APP_DIRECTORY}/todoapp.service" /etc/systemd/system/todoapp.service
+
 systemctl daemon-reload
-systemctl start todoapp
 systemctl enable todoapp
+systemctl restart todoapp

@@ -89,3 +89,21 @@ To complete this task, Terraform and Azure CLI must be installed and configured 
 - Verify the application is running by visiting the public IP in a web browser.
 
 **10. Pull request's description should also contain a reference to a successful workflow run**
+
+## Deployment notes
+
+- Workload resources are deployed to `mate-azure-task-12-tf` to keep them
+  separate from an existing environment.
+- Terraform state is stored in the `tfstate` container of
+  `matetfstate54b294`, in the `mate-azure-task-12` resource group.
+- The Public IP uses Standard SKU with Static allocation because Basic SKU
+  Public IP addresses have been retired.
+- The application is deployed using the Custom Script VM Extension and
+  listens on port 8080.
+
+## Validation
+
+- `terraform fmt -check -recursive -diff`
+- `terraform validate`
+- `terraform plan`
+- Application opened successfully in a browser.

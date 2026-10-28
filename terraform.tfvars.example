@@ -1,0 +1,26 @@
+location            = "indiasouthcentral"
+resource_group_name = "mate-azure-task-12-tf"
+
+virtual_network_name        = "vnet"
+vnet_address_prefix         = "10.0.0.0/16"
+subnet_name                 = "default"
+subnet_address_prefix       = "10.0.0.0/24"
+network_security_group_name = "defaultnsg"
+public_ip_address_name      = "linuxboxpip"
+dns_label_prefix            = "matetask"
+
+vm_name        = "matebox"
+vm_size        = "Standard_B1s"
+admin_username = "azureuser"
+
+storage_account_name   = "replacewithuniquestorageaccount"
+storage_container_name = "task-artifacts"
+
+ssh_key_public = "ssh-ed25519 REPLACE_WITH_YOUR_PUBLIC_KEY"
+
+tags = {
+  project     = "mate-terraform-todolist"
+  environment = "training"
+  managed_by  = "terraform"
+  owner       = "replace-me"
+}
