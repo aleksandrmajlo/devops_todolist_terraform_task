@@ -30,8 +30,8 @@ resource "azurerm_linux_virtual_machine" "main" {
   size                = var.vm_size
   admin_username      = var.admin_username
 
-  disable_password_authentication = true
-
+  disable_password_authentication   = true
+  vm_agent_platform_updates_enabled = true
   network_interface_ids = [
     azurerm_network_interface.main.id
   ]

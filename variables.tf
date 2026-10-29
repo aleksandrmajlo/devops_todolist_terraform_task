@@ -5,9 +5,9 @@ variable "location" {
 }
 
 variable "resource_group_name" {
-  description = "Name of the new workload Resource Group."
+  description = "Name of the workload Resource Group."
   type        = string
-  default     = "mate-azure-task-12-tf"
+  default     = "mate-azure-task-12"
 }
 
 variable "virtual_network_name" {
